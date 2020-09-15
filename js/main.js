@@ -1,3 +1,5 @@
+//code for table of contents
+//will automatically update index.html
 const links = [
     {
         label: "week 1", url: "../index.html"
