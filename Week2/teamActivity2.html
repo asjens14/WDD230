@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <input id="numInput" type="number">
+    <button id="sum" onclick="addNums()">Submit</button>
+    <input id="numInput2" type="number">
+    <button id="add" onclick="addNums2()">+</button>
+    <div id="output"></div>
+
+</body>
+<script>
+    //will add all numbers up to and including the user inputted number
+    function addNums(){
+        var sum = 0;
+        var number = document.getElementById("numInput").value;
+        //console.log(number);
+        for(var i = 0; i <= number; i++){
+            sum += i;
+            //console.log(sum);
+        }
+        //console.log(sum);
+        displayResults(sum);
+    }
+    
+    //add the numbers in each input togethers
+   function addNums2(){
+        var sum = 0;
+        var num1 = document.getElementById("numInput").value;
+        var num2 = document.getElementById("numInput2").value;
+
+        sum = (Number(num1) + Number(num2));
+        displayResults(sum);    
+   }
+
+   
+
+   function displayResults(sum){
+       document.getElementById("output").innerHTML = sum;
+   }
+</script>
+</html>
