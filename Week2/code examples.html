@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Examples</title>
+    <style>
+        .collapsible {
+          background-color: #777;
+          color: white;
+          cursor: pointer;
+          padding: 18px;
+          width: 100%;
+          border: none;
+          text-align: left;
+          outline: none;
+          font-size: 15px;
+        }
+        
+        .active, .collapsible:hover {
+          background-color: #555;
+        }
+        
+        .content {
+          padding: 0 18px;
+          display: none;
+          overflow: hidden;
+          background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Code examples and notes from chapter 2-4</h1>
+    <h2>Ch 2 - programming basics</h2>
+    <button type="button" class="collapsible">Template Literals</button>
+    <div class="content">
+        Allow Javascript expressions to be inserted inside a string<br>
+        Use the backtick character<br>
+        Placed inside curly braces with a $ character in front
+        <pre>
+            const name = `Siri`;
+            `Hello ${ name }!`;
+            << 'Hello Siri!'
+
+            const age = 39;
+            `I will be ${ age + 1 } next year`;
+            << 'I will be 40 next year'
+        </pre>
+    </div>
+    <button type="button" class="collapsible">Octagonal and Hexadecimal Numbers</button>
+    <div class="content">
+        If a number starts with 0x, it is in hexadecimal<br>
+        If a number starts with 0o, it is in octal<br>
+        If a number starts with 0b, it is in binary<br>
+        <pre>
+            Hex:
+            0xAF; // A represents 10, F represents 15
+            << 175
+            
+            Octal:
+            0o47; // 4 eights and 7 units
+            << 39
+
+            Binary:
+            0b1010; // 1 eight, 0 fours, 1 two and 0 units
+            << 10
+        </pre>
+    </div>
+    <button type="button" class="collapsible">Parsing Numbers</button>
+    <div class="content">
+        parseInt() can be used to turn a string representation of a number into a number<br>
+        <pre>
+            parseInt('1010',2); // converts from binary, back to decimal
+            << 10
+            
+            parseInt('omg',36);
+            << 31912
+            
+            parseInt('23',10);
+            << 23
+        </pre><br>
+        If a string starts with a number, parseInt() will use this number and ignore any letters that come after<br>
+        <pre>
+            const address = '221B Baker Street';
+            parseInt(address, 10)
+            << 221
+        </pre>
+        parseInt() will also remove anything after a decimal point<br>
+        parseFloat() converts strings into floating point numbers<br>
+        
+    </div>
+
+    <h2>Ch 3 - Arrays, Logic, and Loops</h2>
+    <button type="button" class="collapsible">delete, pop, push, shift, and unshift*</button>
+    <div class="content">
+        the delete operator will remove an item from an array<br>
+        pop() removes the last item from an array<br>
+        shift() removes the first item in an array<br>
+        push() adds a new value to the end of an array<br>
+        unshift() adds a new item to the beginning of an array
+    </div>
+    <button type="button" class="collapsible">Merging arrays*</button>
+    <div class="content">
+        concat() can be used to merge an array with one or more arrays. Creates a new array<br>
+        join() can be used to turn the array into a string that comprises all the items in the array, separated by commas<br>
+    </div>
+    <button type="button" class="collapsible">slicing and splicing</button>
+    <div class="content">
+        slice() cuts out a slice of an original array, starting at one position and finishing at another<br>
+        <pre>
+            avengers
+            << ['Captain America', 'Iron Man', 'Thor', 'Hulk', 'Hawkeye', 'Black Widow']
+            
+            avengers.slice(2,4) // starts at the third item (index of 2) and finishes at the fourth (the item with index 4 is not included)
+            << ['Thor', 'Hulk']
+        </pre>
+        <span>splice() removes items from an array then inserts new items in their place</span><br>
+        <pre>
+            avengers
+            << ['Captain America', 'Iron Man', 'Thor', 'Hulk', 'Hawkeye', 'Black Widow']
+
+            avengers.splice(3, 1, 'Scarlet Witch');
+            << ['Hulk']
+
+            avengers
+            << ['Captain America', 'Iron Man', 'Thor', 'Scarlet Witch', 'Hawkeye', 'Black Widow']
+        </pre>
+        <span>splice() can also be used to insert items at a specific index without removing items</span><br>
+        <pre>
+            avengers.splice(4,0,'Quicksilver');
+            << []
+
+            avengers
+            << [ 'Captain America','Iron Man', 'Thor', 'Scarlet Witch', 'Quicksilver', 'Hawkeye', 'Black Widow' ]
+        </pre>
+        <span>the delete operator removes items from an array, but changes the value to undefined</span><br>
+        <span>you can use splice() to remove an item completely with a length of 1 and without specifying values to add</span>
+    </div>
+    <button type="button" class="collapsible">Other methods*</button>
+    <div class="content">
+        reverse() reverses the order of an array<br>
+        sort() sorts the array alphabetically by default<br>
+    </div>
+    <button type="button" class="collapsible">Ternary operator</button>
+    <div class="content">
+        a short hand way of writing if ... else statements<br>
+        condition ? (code to run if true) : (code to run if false)<br>
+        <pre>
+            const n = 5;
+            n%2 === 0 ? console.log('n is an even number') : console.log('n is an odd number');
+            << 'n is an odd number'
+        </pre>
+    </div>
+
+    <h2>Ch 4 - functions</h2>
+    <button type="button" class="collapsible">Variable numbers of arguments</button>
+    <div class="content">
+        Every function has a special variable called arguments. This is an array-like object that contains every argument passed to the function when invoked<br>        
+        <pre>
+            function arguments(){
+                return arguments;
+            }
+
+            arguments('hello', NaN);
+            << { '0': 'hello', '1': NaN }
+
+            arguments(1,2,3,4,5);
+            << { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5 }
+        </pre>
+        The arguments can be accessed using an index notation like arrays. The first argument would be accessed using arguments[0]<br>
+        Arguments is not an array. It has a length property and you can read/write each element using index notation, but it doesn't have array methods.<br>
+        Rest operator can be used to deal with multiple arguments by creating an array of arguments that are available inside the body of the function<br>
+        To use, place 3 dots(…) in front of the last parameter in a function declaration<br>
+        This will collect all the arguments entered into an array<br>
+        <pre>
+            function rest(...args){
+                return args;
+            }            
+        </pre>
+        A for loop can be used to iterate over each value given as an argument<br>
+        <pre>
+            function rest(...args){
+                for(arg of args){
+                console.log(arg);
+                }
+            }
+
+            rest(2,4,6,8);
+            << 2
+            4
+            6
+            8            
+        </pre>        
+    </div>
+    <button type="button" class="collapsible">Improved mean function</button>
+    <div class="content">
+        The rest parameter can improve the mean function to allow it to accept any number of values<br>
+        <pre>
+            function mean(...values) {
+                let total = 0;
+                for(const value of values) {
+                    total += value;
+                }
+            return total/values.length;
+        </pre>
+    </div>
+    <button type="button" class="collapsible">Arrow functions</button>
+    <div class="content">
+        Arrow functions can be identifies by the 'arrow' symbol, => that gives them their name<br>
+        The parameters come before the arrow and the main body of the function comes after<br>
+        Arrow functions are anonymous, so if you want to refer to them, you must assign them to a variable<br>
+        <pre>
+            const square = x => x*x;
+
+            Multiple parameters need to go inside parentheses
+            
+            const add = (x,y) => x + y;
+            
+            If the function doesn't require parameters, a pair of empty parentheses must go before the arrow
+            
+            const hello = () => alert('Hello World!');
+        </pre>
+    </div>
+    <button type="button" class="collapsible">Function and variable hoisting</button>
+    <div class="content">
+        Hoisting is the JavaScript interpreter's action of moving all variable and function declarations to the top of the current scope, regardless of where they are defined<br>
+        Functions that are defined using a function declaration are automatically hoisted, meaning they can be invoked before they have been defined<br>
+        
+        Variable declarations that use the var keyword are automatically moved to the top of the current scope<br>
+        
+        Variable assignment is not hoisted<br>
+        A variable at the end of a function will have a value of undefined until the assignment is made<br>
+        
+        <pre>
+            console.log(name); // will return undefined before assignment
+            // variable is defined here
+            var name = 'Alexa';
+            console.log(name); // will return 'Alexa' after assignment
+        </pre>
+        Function expressions are hoisted in a similar way to variables<br>
+        If it is declared using var, the declaration will be hoisted, but not the actual function<br>
+        This means it cannot be invoked until after it appears in the code<br>
+        <pre>
+            // the variable helloExpression has a value of undefined, so the function cannot be invoked
+            helloExpression(); // throws an error
+
+            // the function declaration can be invoked before it is declared
+            helloDeclaration(); // returns 'hello'
+
+            // assign function expression to a variable
+            var helloExpression = function() { 
+                console.log('hello') 
+            }
+
+            // declare function declaration
+            function helloDeclaration() {
+                console.log('hello') 
+            }
+
+            // The function expression can only be invoked after assignment
+            helloExpression(); // returns 'hello'
+        </pre>        
+    </div>
+    <button type="button" class="collapsible">Sorting arrays with a callback</button>
+    <div class="content">
+        <pre>
+        Arrays have a sort() method that sorts items into alphabetical order
+        Works for strings, but not for numbers
+ 
+            [1,3,12,5,23,18,7].sort();
+            << [1, 12, 18, 23, 3, 5, 7]
+
+        Numbers are converted to strings then placed in alphabetical order
+        To sort numeric values, provide a callback to the sort() method that tells it how to compare two values, a and b, and return:
+        A negative if 'a' comes before 'b'
+        0 if a == b
+        A positive if 'a' comes after 'b'
+
+            function numerically(a,b){
+	            return a-b;
+            }
+
+            [1,3,12,5,23,18,7].sort(numerically);
+            << [1, 3, 5, 7, 12, 18, 23]
+
+        In the instance of very large numbers, an overflow error can occur and 'a' - 'b' becomes smaller than the smallest number JavaScript can handle.
+        This function can be used as a callback instead
+
+            function numerically (a,b) {
+	            if (a < b) {
+	            	return -1;
+	            } else if (a> b) {
+	            	return 1;
+	            } else {
+	            	return 0;
+	            }
+            }
+        </pre>
+    </div>
+    <!--
+    <button type="button" class="collapsible"></button>
+    <div class="content">
+        <pre>
+            
+        </pre>
+    </div>-->
+</body>
+<script>
+    //code for collapsable divs from w3schools.com
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
+        }
+      });
+    }
+</script>
+</html>
