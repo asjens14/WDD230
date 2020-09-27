@@ -7,10 +7,14 @@
 </head>
 <body>
     
-    <input id="numInput" type="number">
-    <button id="sum" onclick="addNums()">Submit</button>
-    <input id="numInput2" type="number">
-    <button id="add" onclick="addNums2()">+</button>
+    <input id="input1" type="number">
+    <button id="sum" onclick="addNums()">Submit</button><br><br>
+
+    <input id="input2" type="number"><br>
+    <button id="add" onclick="calculate(add)">+</button>
+    <button id="add" onclick="calculate(sub)">-</button>
+    <button id="add" onclick="calculate(mult)">*</button>
+
     <div id="output"></div>
 
 </body>
@@ -18,28 +22,43 @@
     //will add all numbers up to and including the user inputted number
     function addNums(){
         var sum = 0;
-        var number = document.getElementById("numInput").value;
-        //console.log(number);
+        var number = document.getElementById("input1").value;
+        console.log(number);
         for(var i = 0; i <= number; i++){
             sum += i;
-            //console.log(sum);
+            console.log(sum);
         }
-        //console.log(sum);
+        console.log(sum);
         displayResults(sum);
     }
     
-    //add the numbers in each input togethers
-   function addNums2(){
-        var sum = 0;
-        var num1 = document.getElementById("numInput").value;
-        var num2 = document.getElementById("numInput2").value;
+    function getNum(id){
+        const num = document.getElementById(id).value;
+        console.log(num);
+        return num;
+    }
 
-        sum = (Number(num1) + Number(num2));
-        displayResults(sum);    
+    function add(num1, num2){
+        return Number(num1) + Number(num2);
+    }
+
+    function sub(num1, num2){
+        return Number(num1 - num2);
+    }
+
+    function mult(num1, num2){
+        return Number(num1 * num2);
+    }
+
+   function calculate(operation){
+       console.log(document.getElementById("input1").value);
+       console.log(document.getElementById("input2").value);
+        const total = operation(getNum('input1'), getNum('input2'));
+        displayResults(total);
    }
 
-   function displayResults(sum){
-       document.getElementById("output").innerHTML = sum;
+   function displayResults(total){
+       document.getElementById("output").innerHTML = total;
    }
 </script>
 </html>
