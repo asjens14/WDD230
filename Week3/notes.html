@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes</title>
+    <style>
+        .collapsible {
+          background-color: #777;
+          color: white;
+          cursor: pointer;
+          padding: 18px;
+          width: 100%;
+          border: none;
+          text-align: left;
+          outline: none;
+          font-size: 15px;
+        }
+        
+        .active, .collapsible:hover {
+          background-color: #555;
+        }
+        
+        .content {
+          padding: 0 18px;
+          display: none;
+          overflow: hidden;
+          background-color: #f1f1f1;
+        }
+
+        p{
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+    <h1>Code examples and notes from chapter 5-7</h1>
+    <h2>Ch 5 - Objects</h2>
+    <button type="button" class="collapsible">Object literals</button>
+    <div class="content">
+        <p>
+        An object is a self-contained set of related values and functions.
+        They act as a collection of named properties that map to any JavaScript value such as strings, numbers, booleans, arrays and functions.
+        If a property’s value is a function, it is known as a method.
+
+        An object literal is an object that is created directly in the language by wrapping all its properties and methods in curly braces
+            
+            const superman = {
+                name: 'Superman',
+                'real name': 'Clark Kent',
+                height: 75,
+                weight: 235,
+                hero: true,
+                villain: false,
+                allies: ['Batman','Supergirl','Superboy'],
+                fly() {
+                    return 'Up, up and away!';
+                }
+            };        
+        </p>
+    </div>
+    <button type="button" class="collapsible">Accessing properties/Checking if properties exist</button>
+    <div class="content">
+        <p>
+        You can access the properties of an object using the dot notation
+	
+            superman.name
+            << 'Superman'
+
+        You can also access an object’s properties using bracket notation
+        The property is represented by a string inside square brackets, 
+        so it needs to be placed inside single or double quotation marks:
+
+            superman['name']
+            << 'Superman'
+
+        Bracket notation is the only way to access nonstandard property and method names that don’t follow the variable naming rules.
+        It also lets you evaluate an expression and use it as the property key:
+
+            superman["real" + " " + "name"] // the property is built using string concatenation
+            << "Clark Kent"
+
+
+        If you try to access a property that doesn’t exist, undefined will be returned
+
+        The in operator can be used to check whether an object has a particular property.
+        So, for example, we can check if the superman object has a property called city using this code:
+
+            'city' in superman;
+            << false
+        </p>
+    </div>
+    <button type="button" class="collapsible">Finding all the properties of an object</button>
+    <div class="content">
+        <p>
+        We can loop through all of an object’s properties and methods by using a for in loop.
+        For example, to log all the properties of the superman object to the console, we could use:
+
+            for(const key in superman) {
+                console.log(key + ": " + superman[key]);
+            }
+            << "name: Superman"
+            << "real name: Clark Kent"
+            << "height: 75"
+            << "weight: 235"
+            << "hero: true"
+            << "villain: false"
+            << "allies: Batman,Supergirl,Superboy"
+            << "fly: function (){
+                console.log(\"Up, up and away!\");
+            }"
+            
+        The  <b>Object.keys()</b> method will return an array of all the keys of any object that is provided as an argument.
+        We can then iterate over this array to access all the keys of an object:
+            
+            for(const key of Object.keys(superman)) {
+                console.log(key);
+            }
+            <<  name
+            real name
+            height
+            weight
+            hero
+            villain
+            allies
+            fly
+            
+        The <b>Object.values()</b> method works the same way, but returns an array of all the objects values
+            
+            for(const value of Object.values(superman)) {
+                console.log(value);
+            }
+            <<  Superman
+            Clark Kent
+            75
+            235
+            true
+            false
+            [ 'Batman','Supergirl','Superboy' ]
+            [Function: fly]
+            
+        <b>Object.entries()</b> returns an array of key-value pairs.
+        These key-value pairs are returned in arrays, but they can be destructured and accessed individually using the following notation:
+            
+            for(const [key,value] of Object.entries(superman)) {
+            console.log(`${key}: ${value}`);
+            }
+            <<  name: Superman
+            real name: Clark Kent
+            height: 75
+            weight: 235
+            hero: true
+            villain: false
+            allies: [ 'Batman','Supergirl','Superboy' ]
+            fly: [Function: fly]
+        </p>
+    </div>
+    <button type="button" class="collapsible">Adding/changing/removing properties</button>
+    <div class="content">
+        <p>
+        New properties can be added to objects at any time in a program. This is done by simply assigning a value to the new property.
+        For example, if we wanted to add a new city property to our superman object, we would do it like so:
+
+            superman.city = 'Metropolis';
+            << 'Metropolis'
+            
+        You can change the value of an object’s properties at any time using assignment.
+        For example, we can change the value of the "real name" property like this:
+            
+            superman['real name'] = 'Kal-El';
+            << 'Kal-El'
+            
+        Any property can be removed from an object using the delete operator.
+        For example, if we wanted to remove the fly method from the superman object, we would enter the following:
+            
+            delete superman.fly
+            << true            
+        </p>
+    </div>
+    <button type="button" class="collapsible">Nested objects</button>
+    <div class="content">
+        <p>
+        Objects can contain other objects. These are known as nested objects.
+        Here’s an example of an object that contains a list of other objects. It has been assigned to the variable jla :
+
+            const jla = {
+            superman: { realName: 'Clark Kent' },
+            batman: { realName: 'Bruce Wayne' },
+            wonderWoman: { realName: 'Diana Prince" },
+            flash: { realName: 'Barry Allen' },
+            aquaman: { realName: 'Arthur Curry' },
+            }
+            
+        The values in nested objects can be accessed by referencing each property name in order using either dot or bracket notation:
+            
+            jla.wonderWoman.realName
+            << "Diana Prince"
+            
+            jla['flash']['realName']
+            << "Barry Allen"            
+        </p>
+    </div>
+    <button type="button" class="collapsible">Objects as parameters to functions</button>
+    <div class="content">
+        <p>
+        An object literal can be passed as a parameter to a function.
+        This is useful when there are a large number of parameters, as it allows the arguments to be provided by name and in any order.
+        This means you don't have to remember the order to enter them when invoking a function.
+        The following example shows how this can be done using a function called greet():
+
+            function greet({greeting,name,age}) {
+            return `${greeting}! My name is ${name} and I am ${age} years old.`;
+            }
+
+        Here’s an example of how the function can be used.
+
+            greet({ greeting: `What's up dude`, age: 10, name: `Bart` });
+            << 'What\'s up dude! My name is Bart and I am 10 years old.'
+
+        We can provide default values for some of the parameters using assignment
+
+            function greet({greeting='Hello',name,age=18}) {
+            return `${greeting}! My name is ${name} and I am ${age} years old.`;
+            }
+        </p>
+    </div>
+    
+    <h2>Ch 6 - DOM</h2>
+    <button type="button" class="collapsible">example web page</button>
+    <div class="content">
+        <p>
+            <code>
+          < header >
+              < h1 id='title'> Justice League < /h1<br>
+          < /header >
+          < ul id='roster' >
+               < li class='hero'> Superman < /li ><br>
+               < li class='vigilante hero' id='bats'> Batman < /li ><br>
+               < li class='hero'>Wonder Woman< /li >
+          < /ul>
+            </code>
+        </p>
+    </div>
+    <button type="button" class="collapsible">DOM nodes</button>
+    <div class="content">
+        <p>
+            The DOM represents an HTML document as a network of connected nodes that form a tree-like structure.
+            The DOM treats everything on a web page as a node. HTML tags, the text inside these tags, even the attributes of a tag are all nodes. The HTML tag is the root node, and every other part of the document is a child node of this.
+            
+            Node lists are array-like objects, but they are not arrays. You can access each item using index notation. Document.images[0] will return the first image in the image node list
+            They also have a length property that can be used to iterate through every element using a loop
+            
+            Node lists don't have any other array methods like slice, splice, and join
+            You can turn a node list into an array using array.from()
+            
+                    const imageArray = Array.from(document.images);
+            
+            The spread operator can also be used
+            
+                    const imageArray = [...document.images];
+        </p>
+    </div>
+    <button type="button" class="collapsible">Query selectors</button>
+    <div class="content">
+        <p>
+        The document.querySelector() method allows you to use CSS notation to find the first element
+        in the document that matches that matches a CSS selector provided as an argument.
+        If no elements match, it will return null.
+
+        The document.querySelectorAll() method also uses CSS notation but returns a node list of all
+        the elements in the document that match the CSS query selector.
+        If no elements match, it will return an empty node list.
+            
+        Document.getElemenById('') -> document.querySelector('#')
+            
+                document.querySelector('#bats');
+                << < li class="vigilante hero" id="bats">Batman< /li>
+            
+        Document.getElementsByClassName('') -> document.querySelectorAll('.')
+            
+                document.querySelectorAll('.hero');
+                << NodeList [< li class="hero">, < li id="bats">, < li class="hero">]
+        </p>
+    </div>
+    <button type="button" class="collapsible">Navigating the DOM tree*</button>
+    <div class="content">
+        <p>
+        The childNodes property is a list of all the nodes that are children of the node concerned.
+        The following example will return all the child nodes of the element with an id attribute of roster:
+	
+                const heroes = document.getElementById('roster');
+                heroes.childNodes
+                << NodeList [#text "
+                ", < li class="hero">, #text "
+                ", < li id="bats">, #text "
+                ", < li class="hero">, #text "
+                ", < li class="hero">, #text "
+        
+        <b>childNodes</b> returns all the nodes that are children
+        The children property returns any element nodes that are children of that node
+        
+        <b>firstChild</b> returns the first child of a node
+        <b>lastChild</b> returns the last child of a node
+                const wonderWoman = document.querySelector('ul#roster li:last-child');
+                wonderWoman.parentNode
+                << < ul id='roster'>…< /ul>
+
+        <b>parentNode</b> returns the parent node of an element            
+        <b>nextSibling</b> returns the next adjacent node of the same parent. Will return null if it is the last child node
+        <b>previousSibling</b> returns the previous adjacent node. Will return null if it is the first child node
+        </p>
+    </div>
+    <button type="button" class="collapsible">Getting/setting attributes*</button>
+    <div class="content">
+        <p>
+        <b>getAttribute()</b> returns the value of the attribute provided as an argument. If an element does not have the given attribute, it returns null
+                wonderWoman.getAttribute('class');
+                << "hero"
+        <b>setAttribute()</b> can change the value of an element’s attributes. It takes two arguments: the attribute that you wish to change, and the new value of that attribute.
+                wonderWoman.setAttribute('class', 'villain');
+                << undefined
+                wonderWoman.getAttribute('class');
+                << "villain"
+        <b>setAttribute()</b> can be used to add attributes to an element
+                wonderWoman.setAttribute('id','amazon');
+                wonderWoman.getAttribute('id');
+                << 'amazon'
+        </p>
+    </div>
+    <button type="button" class="collapsible">classes of elements*</button>
+    <div class="content">
+        <p>
+        <b>className()</b> allows the class of an element to be set directly.
+        In addition, it can be used to find out the value of the class attribute, and change it
+            wonderWoman.className;
+            << "villain"
+            wonderWoman.className = 'hero'
+            << "hero"
+            
+        Changing the class with <b>className</b> will overwrite all other classes that have already been set on the element. Using classList() can avoid this
+        
+        <b>classList()</b> is a list of all the classes an element has. It has several methods to modify the class
+        <b>classList.add()</b> will add a class
+        <b>classList.remove()</b> will remove a class
+        <b>classList.toggle()</b> will add a class if it doesn't have it, and remove a class if it does
+        <b>classList.contains()</b> checks if an element has a particular class
+        </p>
+    </div>
+    <button type="button" class="collapsible">creating dynamic markup*</button>
+    <div class="content">
+        <p>
+        <b>createElement()</b> takes a tag name as a parameter and returns that element.
+
+                const flash = document.createElement('li');
+            
+        To add content, we’ll need to create a text node.
+        A text node can be created using the <b>document.createTextNode()</b> method.
+        It takes a parameter, which is a string containing the text that goes in the node.
+
+                const flashText = document.createTextNode('Flash');
+        
+        The element and text nodes are created, but not linked - we need to append the text node to the paragraph node.
+        Every node object has an <b>appendChild()</b> method that will add another node (given as an argument) as a child node.
+        We want our newly created text node to be a child node of the list element node.
+        This means that it’s the flash object that calls the method, with flashText as its argument:
+
+                flash.appendChild(flashText);
+        
+        Process to follow is
+        1.create element node
+        2.create text node
+        3.append text node to element node
+        
+        This can be made simpler by using the textContent property. This will add a text node to an element without the need to append it
+
+                const flash = document.createElement('li');
+                flash.textContent = 'Flash';
+        
+        A function can be written to create elements to avoid repetition
+
+                function createElement (tag,text) {
+                const el = document.createElement(tag);
+                el.textContent = text;
+                return el
+                }
+        
+        <b>appendChild()</b> can be called on a node to add a new child node. The new node will always be added at the end of any existing child nodes.
+
+                heroes.appendChild(flash);
+        
+        <b>insertBefore()</b> will place a new element before another. This method is called on the parent node.
+        It takes two parameters: the new node to be added, and the node that you want it to go before
+        
+        <b>removeChild()</b> is used to revove elements from a page. It is called on the parent node and has a single parameter, the node to be removed
+        
+        <b>relpaceChild()</b> can be used to replace one node with another.
+        It’s called on the parent node and has two parameters: the new node, and the node that is to be replaced.
+        
+                const h1 = document.getElementById('title');
+                const oldText = h1.firstChild;
+                const newText = document.createTextNode('Justice League of America');
+                h1.replaceChild(newText,oldText)
+        </p>
+    </div>    
+    <h2>Ch 7 - </h2>
+    <button type="button" class="collapsible"></button>
+    <div class="content">
+        <p>
+
+        </p>
+    </div>
+</body>
+<script>
+    //code for collapsable divs from w3schools.com
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
+        }
+      });
+    }
+</script>
+</html>
