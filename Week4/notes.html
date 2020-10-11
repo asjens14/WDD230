@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>week 4 notes</title>
+    <style>
+        .collapsible {
+          background-color: #777;
+          color: white;
+          cursor: pointer;
+          padding: 18px;
+          width: 100%;
+          border: none;
+          text-align: left;
+          outline: none;
+          font-size: 15px;
+        }
+        
+        .active, .collapsible:hover {
+          background-color: #555;
+        }
+        
+        .content {
+          padding: 0 18px;
+          display: none;
+          overflow: hidden;
+          background-color: #f1f1f1;
+        }
+
+        p{
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ch 8 - forms</h1>
+    <button type="button" class="collapsible">ch 8</button>
+    <div class="content">
+        <pre>
+        <h2>Accessing form elements</h2>
+        <b>document.forms</b> returns an HTML collection of all the forms in the document in the order they appear. Index notation is used to return a form.            
+                const form = document.forms[0];            
+                const form = document.getElementsByTagname('form')[0];
+            
+        A form object also has an <b>.elements</b> method that returns an HTML collection of all the elements in a form
+            
+        The <b>name</b> attribute can be used to identify a form            
+                const form = document.forms.search;
+            
+        Bracket notation cane used if any properties or methods of the document.forms have the same name as the form
+            
+                const form = document.forms['search'];
+            
+        <h2>Form properties and methods</h2>
+        Forms have a numberof useful properties and methods that can be used to interact with the form.
+        <b>forms.submit()</b> will submit the form automatically. Wont trigger the form <b>submit</b> event
+        A form can be submitted manually by the user employing a button or input element with a type attribute of submit , or even an input element with a type attribute of image
+            
+                < button type='submit'>Submit< /button>
+                < input type='submit' value='Submit'>
+                < input type='image' src='button.png'>
+            
+        <b>form.reset()</b> will reset the form controls back to its initial values. A button with a <b>type</b> attribute of <b>reset</b> can also be used
+            
+                < button type='reset'>Reset< /button>
+            
+        The <b>form.action</b> property can be used to set the <b>action</b> attribute of a form, so it’s sent to a different URL to be processed on the server
+            
+                form.action = '/an/other.url'
+            
+        <h2>Form events</h2>
+        The <b>focus</b> event occurs when an element is focused on
+        <b>blur</b> occurs when an element loses focus
+        <b>changed</b> occurs when the value is changed.
+            
+        <h3>Submitting a form</h3>
+        The most important event is the <b>submit</b> event that fires when a form is submitted
+            
+        <b>Retrieving and changing values from a form</b>
+        Text input element objects have a <b>value</b> property that can be used to retrieve the text inside the field.
+        Can be used to report what was searched for
+            
+            You can set the value using javascript
+            
+            <h2>Form controls</h2>
+            Common types of form control
+            <ul>
+                <li><b>input</b> - text, passwords, check boxes radio buttons, file uploads</li>
+                <li><b>select</b> - drop down menus</li>
+                <li><b>textarea</b> - elements for longer text entry</li>
+                <li><b>button</b> - submitting and resetting forms</li>
+            </ul>
+            
+            <b>Checkbox inputs are created using type="checkbox"</b>
+            Check boxes can be checked using <b>checked</b> attribute
+            Can be accessed as an HTML collection if name attribute is the same
+            
+            <b>Radio buttons are created using type="radio"</b>
+            Can be accessed as an HTML collection if name attribute is the same
+            Value stored in <b>form.name.value</b>
+            
+            <b>Hidden fields are created using type="hidden"</b>
+            Not displayed by the browser, but have a value attribute
+            Often used to send information like settings or information the user already provided
+            
+            <b>File input fields are created using type="file"</b>
+            Used to upload files
+            
+            Dropdown menus are created using <b>select</b>
+            To select multiple options, the <b>multiple</b> attribute is required
+            It is possible to find the index of the option that is selected using the <b>selectedIndex</b> property
+            This can then be used to access the actual text contained in the option
+            You can access the text of any option using index notation
+            
+                    form.city.options[form.city.selectedIndex].text
+            
+            <b>textarea</b> elements are used to enter long pieces of text over multiple lines like comments or blog posts
+            Accessed using the <b>name</b> attribute
+            
+            <h2>Form validation</h2>
+            Process for checking whether a user has entered information correctly
+            Advisable to use both client-side and server-side validation
+            
+        </pre>
+    </div>
+    <h1> ch 12 - object oriented programming</h1>
+    <button type="button" class="collapsible">ch 12</button>
+    <div class="content">
+        <pre>
+            Object oriented programming is a style of programming that involves separating the code into objects that have properties and methods.
+            Object-oriented programming is often used to model representations of objects in the real world. 
+            There are three main concepts in OOP: encapsulation, polymorphism and inheritance.
+            
+            <b>Encapsulation</b>
+            The inner workings are kept hidden inside the object and only the essential functionalities are exposed to the end user
+            
+            <b>polymorphism</b>
+            Same process can be used for different objects
+            Various objects can share the same method, but also have the ability to override them with more specific implementation
+            
+            <b>inheritance</b>
+            we can take an object that already exists and inherit all its properties and methods. We can then improve on its functionality by adding new properties and methods.
+            
+            <h3>classes</h3>
+            Defines a blueprint for an object. Objects are then created as an instance of that class, and inherit all the properties and methods of the class.
+            
+            <h2>constructor functions</h2>
+            A function that defines the properties and methods of an object
+            Object:
+            
+                    const dice = {
+                        sides: 6,
+                        roll() {
+                            return Math.floor(this.sides * Math.random() + 1)
+                        }    
+                    }
+            
+            Rewritten as a constructor function:
+                    const Dice = function(sides=6){
+                        this.sides = sides;
+                        this.roll = function() {
+                            return Math.floor(this.sides * Math.random() + 1)
+                        }
+                    }
+            
+            The keyword <b>this</b> is used to represent the object that will be returned by the constructor function. It is used in the example to set the sides property to the argument provided to the constructor function. Also adds a <b>roll()</b> method
+            
+            An instance of the dice function can now be created using the <b>new</b> operator
+            
+                    const redDice = new Dice();
+                    << Dice { sides: 6, roll: [Function] }
+            
+            <h3>class declarations</h3>
+            Does the same thing as a constructor function, but looks similar to writing a class in a class-based language
+            
+                    class Dice {
+                        constructor(sides=6) {
+                            this.sides = sides;
+                        }
+                        roll() {
+                            return Math.floor(this.sides * Math.random() + 1)
+                        }
+                    }
+            
+            Using class declarations helps avoid a number of pitfalls associated with constructor functions
+            an error is thrown when trying to call a class constructor without using the new operator, whereas doing the same thing with a constructor function can cause a lot of problems that are hard to track down
+            
+                    // Using constructor function - noDice is just set to undefined without any warning
+                    const noDice = Dice();
+                    noDice
+                    << undefined
+                    // Using class - an error is thrown
+                    const noDice = Dice();
+                    << TypeError: Class constructor Dice cannot be invoked without 'new'
+            
+            <h3>the constructor property</h3>
+            All objects have a <b>constructor</b> property that returns the constructor function that created it
+            We can use the constructor property to instantiate a copy of an object, without having to reference the actual constructor function or class declaration directly.
+            if we wanted to make another copy of the redDice object, but if the name of its constructor was unknown, we could use the following:
+            
+                    const greenDice = new redDice.constructor(10);
+                    greenDice instanceOf Dice
+                    << true
+            
+            <h2>static methods</h2>
+            The <b>static</b> keyword can be used in class declarations to create a static method.
+            Also called a class method
+            A static method is called by the class directly rather than by instances of the class
+            The dice class could have a method
+            
+                    class Dice {
+                        constructor(sides=6) {
+                            this.sides = sides;
+                        }
+                        roll() {
+                            return Math.floor(this.sides * Math.random() + 1)
+                        }
+                        static description() {
+                            return 'A way of choosing random numbers'
+                        }
+                    }
+            
+            This method is called from the Dice class like so:
+            
+                    Dice.description()
+                    << 'A way of choosing random numbers'
+            
+            Static methods are not available to instances of the class.
+            
+            <h2>prototypal inheritance</h2>
+            Prototypal inheritance means that every class has a prototype property that is shared by every instance of the class. So any properties or methods of a class’s prototype can be accessed by every object instantiated by that class.
+            
+            Example
+            
+                    class Turtle {
+                        constructor(name) {
+                            this.name = name;
+                            this.weapon = 'hands';
+                        }
+                        sayHi() {
+                            return `Hi dude, my name is ${this.name}`;
+                        }
+                        attack(){
+                            return `Feel the power of my ${this.weapon}!`;
+                        }
+                    }
+            
+            <h3>the prototype property</h3>
+            The <b>prototype</b> property is useful for adding properties and methods to a class after one has been declared.
+            Also helpful if you don't have access to the class declaration, but still want to add properties and methods
+            All classes and constructor functions have a <b>prototype</b> property that returns an object
+            
+                    Turtle.prototype;
+                    << Turtle {}
+            
+            New properties can be added by assignment:
+            
+                    Turtle.prototype.weapon = 'Hands';
+                    << 'Hands'
+            
+            Methods can be added in a similar way
+            
+                    Turtle.prototype.attack = function(){
+                        return `Feel the power of my ${this.weapon}!`;
+                    }
+                    << [Function]
+            
+            Create a new instance of turtle
+                    const raph = new Turtle('Raphael');
+                    raph.name
+                    << 'Raphael'
+                    raph.sayHi()
+                    << 'Hi dude, my name is Raphael'
+                    raph.weapon
+                    << 'Hands'
+                    raph.attack()
+                    << 'Feel the power of my Hands!'
+            
+            <h3>finding out the prototype</h3>
+            Consrtuctor's <b>prototype</b> property
+            
+                    raph.constructor.prototype;
+                    << Turtle { attack: [Function], weapon: 'Hands' }
+            
+            <b>object.getPrototypeOf()</b> method
+            
+                    Object.getPrototypeOf(raph);
+                    << Turtle { attack: [Function], weapon: 'Hands' }
+            
+            <h3>own properties and prototype properties</h3>
+            Every object has a <b>hasOwnProperty</b> method that can be used to check if a method is its own property or is inherited from the prototype
+            
+                    raph.hasOwnProperty('name');
+                    << true
+                    raph.hasOwnProperty('weapon');
+                    << false
+            
+            The name property is considered to be its own property
+            Prototype properties are shared by every instance of the class.
+            
+            <h3>overwriting prototype properties</h3>
+            An object instance can overwrite any properties or methods inherited from its prototype by simply assigning a new value to them.
+            
+                    leo.weapon = 'Katana Blades';
+                    << 'Katana Blades';
+            
+            These properties become an 'own property' of the instance object
+            
+            <h2>public and private methods</h2>
+            An objects methods are public by default
+            Public = can be queried directly and changed by assignment
+            Giving users or external services access to properties & methods can cause problems
+            
+            Variable scope is used to keep properties & methods private
+            This prevents them from being accessed or changed
+            
+            The class has been modified to include a private color property
+            
+                    class Turtle {
+                        constructor(name,color) {
+                            this.name = name;
+                            let _color = color;
+                            this.setColor = color => { return _color = color; }
+                            this.getColor = () => _color;
+                        }
+                    }
+            
+            The color property is created as a variable inside the class
+            Getters and setters are used to access and change the property
+            
+                    raph = new Turtle('Raphael','Red');
+                    << Turtle { name: 'Raphael', setColor: [Function], getColor: [Function] }
+                    raph.getColor();
+                    << 'Red'
+                    raph.setColor(4);
+                    << 4
+            
+            There is full control over the getter/setter methods.
+            Properties can only be changed in a controlled way, so you can stop certain assignments from being made
+            
+            
+                    this.setColor = (color) => {
+                    if(typeof color === 'string'){
+                    return _color = color;
+                    } else {
+                    throw new Error('Color must be a string');
+                    }
+                    }
+                    raph.setColor(4);
+                    << Error: Color must be a string
+            
+            
+            <h2>inheritance</h2>
+            An prototype is an object.
+            Has a prototype which has a prototype… etc.
+            Creates a chain of inheritance
+            
+            <h3>prototype chain</h3>
+            <b>Object.getPrototypeOf</b> can be used recursively
+            
+                    Object.getPrototypeOf(raph)
+                    << Turtle {}
+            
+                    Object.getPrototypeOf(Object.getPrototypeOf(raph))
+                    << {}
+            
+                    Object.getPrototypeOf(Object.getPrototypeOf(Object.getPrototypeOf(raph)))
+                    << null
+            
+            <h2>the object constructor</h2>
+            All objects inherit from the prototype of the <b>object</b> constructor function
+        </pre>
+    </div>
+    <button type="button" class="collapsible">...</button>
+    <div class="content">
+        <p>
+        
+        </p>
+    </div>
+</body>
+<script>
+    //code for collapsable divs from w3schools.com
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
+        }
+      });
+    }
+</script>
+</html>
