@@ -3,31 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>todo list</title>
+    <style>
+        h1{
+            text-align: center;
+        }
+
+        .container{
+            max-width: 400px;
+            margin: auto;
+            font-size: 14px;
+            font-family: sans-serif;
+        }
+
+        .todo{
+            display: flex;
+            align-items: center;
+            width: 100%;
+            border: 1px solid black;
+            padding: 10px;
+            box-sizing: border;
+        }
+
+        .todo button{
+            width: 25px;
+            height: 25px;
+            border: 1px solid grey;
+            border-radius: 2px;
+        }
+
+        .todoDeleteBtn{
+            background-color: red;
+            color: white;
+        }
+
+        .todoContent{
+            padding: 10px 20px;
+            width: calc(100% - 50px);
+        }
+
+        .todo-filters{
+            padding-top: 20px;
+        }
+        
+    </style>
+    <script type="module" src="js/ToDo.js"></script>
 </head>
 <body>
-    <!--Title-->
+    <div class="container">
+        <h1>Todos</h1>
+        <div class="todos-wrapper">
+            <div id="todos">
 
-    <!--tasks-->
-        <!--[checkbox]Task     delete-->
-        <!--[checkbox]Task     delete-->
-        <!--[checkbox]Task     delete-->
+            </div>
 
-        <!--#left/all/active/complete-->
+            <div class="todo-filters">
 
-    <!--footer-->
-        <!--[text input]       [add task]-->
+            </div>
+            
+            <div class="add-todo-wrapper">
+                <input id="todoInput" type="text">
+                <button id="addBtn">Add</button>
+            </div>
 
-
-    <!--UI actions needed-->
-        <!--show list of tasks-->
-        <!--add new task-->
-        <!--complete task-->
-        <!--remove task-->
-        <!--filter tasks (complete/incomplete)-->
-        
-    <!--data sources:localStorage-->
-        <!--todo:{id: timestamp, content: string, completed: bool-->
-        <!--toDoList = [toDo]-->
+        </div>
+    </div>
+    <!--@media(max-width: 500px){
+            .add-todo-wrapper{
+                position: absolute;
+                bottom: 10px
+            }
+        }-->
 </body>
 </html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week5 notes</title>
+    <style>
+        div{
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ch10 notes - debugging</h1>
+<div>
+    <h2>errors, exceptions, and warnings</h2>
+    An <b>exception</b> is an error that produces a return value that can be used by a program to deal with the error
+    
+    An exception produces a <b>stack trace</b>, which is a sequence of functions/methods where the error occurred.
+    Often not a singular function/methods that causes an error.
+    
+            function three(){ unicorn(); }
+            function two(){ three(); }
+            function one(){ two(); }
+            one();
+            << index.html:13 Uncaught ReferenceError: unicorn is not defined
+            at three (index.html:13)
+            at two (index.html:17)
+            at one (index.html:21)
+            at index.html:24`
+    
+    A <b>warning</b> occurs if there is an error that won't crash the program.
+    Program will continue run, but may do so incorrectly
+    When runtime errors occur, the javascript will stop working in the background
+    
+    <h2>strict mode</h2>
+    Produces more exceptions/errors and prohibits use of depreciated features
+    Considers coding practices that were accepted as poor style as errors
+    
+    Writing code in strict mode can improve its clarity and speed
+    
+    Strict mode requires this string on the first line: <b>'use strict';</b>
+    Will enforce strict mode on all javascript in the file
+    
+    Can be used on a per function basis
+    Recommended way is using a self invoking function
+    
+            (function() {
+            'use strict';
+            // All your code would go inside this function
+            }());
+    
+    <h4>linting tools</h4>
+    Linting tools can be used to test the quality of JavaScript code, beyond simply using strict mode.
+    designed to highlight any sloppy programming practices or syntax errors, and will complain if certain style conventions are not followed, such as how code is indented.
+    
+    <h2>debugging in the browser</h2>
+    Debugging is the process of finding out where bugs occur in the code and then dealing with them.
+    
+    <h4>the trusty alert</h4>
+    The most basic form of debugging is to use the <b>alert()</b> method to show a dialog at certain points in the code.
+    Because alert() stops a program from running until OK is clicked, it allows us to effectively put breakpoints in the code that let us check the value of variables at that point to see if they’re what we expect them to be.
+    
+            function amIOldEnough(age){
+                if (age = 12) {
+                    alert(age);
+                    return 'No, sorry.';
+                } else if (age < 18) {
+                    return 'Only if you are accompanied by an adult.';
+                }
+                else {
+                    return 'Yep, come on in!';
+                }
+            }
+    
+            amIOldEnough(21)
+            << 'No, sorry.'
+    
+    The value of 12 was assigned to age, not compared to 12
+    
+    <h4>using the console</h4>
+    <b>console.log()</b> can be used to log the value of variable at different stages of the program
+    Won't stop program execution unlike <b>alert()</b>
+    
+            function amIOldEnough(age){
+                console.log(age);
+                if (age < 12) {
+                    console.log(`In the if with ${age}`);
+                    return 'No, sorry.';
+                } else if (age < 18) {
+                    console.log(`In the else-if with ${age}`);
+                    return 'Only if you are accompanied by an adult.';
+                } else {
+                    console.log(`In the else with ${age}`);
+                    return 'Yep, come on in!';
+                }
+            }
+    
+    <h4>debugging tools</h4>
+    
+    
+    <h2>error objects</h2>
+    An error object can be created by the host environment when an exception occurs, or using a constructor function
+    
+            const error = new Error();
+    
+    Takes a parameter that’s used as the error
+            const error = new Error('Oops, something went wrong');
+    
+    Other error objects:
+    <b>EvalError</b> - not used in the current ECMAScript specification and only retained for backwards compatibility. It was used to identify errors when using the global eval() function.
+    <b>RangeError</b> - thrown when a number is outside an allowable range of values
+    <b>ReferenceError</b> - thrown when a reference is made to an item that doesn’t exist. For example, calling a function that hasn't been defined.
+    <b>SyntaxError</b> - thrown when there’s an error in the code’s syntax.
+    <b>TypeError</b> - thrown when there’s an error in the type of value used; for example, a string is used when a number is expected.
+    <b>URIError</b> - thrown when there’s a problem encoding or decoding the URI.
+    <b>InternalError</b> - a non-standard error that is thrown when an error occurs in the JavaScript engine.
+    
+    These errors can be used in constructors to create custom error objects
+    
+    All error objects have a number of properties, but are inconsistent across browsers
+    Safe to use properties are
+    <b>name</b> - returns name of the error constructor function used as a string
+    <b>message</b> - returns a description of the error and should be provided as an argument to the error constructor function
+    <b>stack</b> - returns stack trace. Non standard
+    
+    <h4>throwing exceptions</h4>
+    You can throw your own exceptions using the <b>throw</b> statement
+    It is best practice to throw an error object, which can then be caught using <b>catch</b>
+    
+    This squareroot function will throw an error if a negative argument is used
+    
+            function squareRoot(number) {
+                'use strict';
+                if (number < 0) {
+                    throw new RangeError('You can't find the square root of negative numbers')
+                }
+                return Math.sqrt(number);
+            };
+            
+            squareRoot(121);
+            << 11
+            squareRoot(-1);
+            << RangeError: You can't find the square root of negative numbers
+    
+    
+    <h2>exception handling</h2>
+    <h4>try, catch, and finally</h4>
+    If we suspect a piece of code will result in an exception, we can wrap it in a try block. This will run the code inside the block as normal, but if an exception occurs it will pass the error object that is thrown onto a catch block.
+    
+            function imaginarySquareRoot(number) {
+                'use strict';
+                try {
+                    return String(squareRoot(number));
+                } catch(error) {
+                    return squareRoot(-number)+'i';
+                }
+            }
+    
+    The code in a catch block will only run if an exception is thrown
+    A <b>finally<b> block can be added after a catch block.
+    Will always be executed after the try or catch block
+    
+            function imaginarySquareRoot(number) {
+                'use strict';
+                let answer;
+                try {
+                    answer = String(squareRoot(number));
+                } catch(error) {
+                    answer = squareRoot(-number)+"i";
+                } finally {
+                    return `+ or - ${answer}`;
+                }
+            }
+        
+</div>
+    
+</body>
+</html>
