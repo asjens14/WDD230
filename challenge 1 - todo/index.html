@@ -22,7 +22,12 @@
             width: 100%;
             border: 1px solid black;
             padding: 10px;
-            box-sizing: border;
+            box-sizing: border-box;
+            margin: 10px 0px;
+        }
+
+        .completed .todoContent{
+            text-decoration: line-through;
         }
 
         .todo button{
@@ -30,6 +35,20 @@
             height: 25px;
             border: 1px solid grey;
             border-radius: 2px;
+        }
+
+        .add-todo-wrapper{
+            width: 100%;
+            display: flex;
+        }
+
+        #todoInput{
+            flex: 1;
+            padding: 5px;
+        }
+
+        #addBtn{
+
         }
 
         .todoDeleteBtn{
@@ -58,7 +77,9 @@
             </div>
 
             <div class="todo-filters">
-
+                <button id="all">All</button>
+                <button id="active">Active</button>
+                <button id="complete">Complete</button>
             </div>
             
             <div class="add-todo-wrapper">
