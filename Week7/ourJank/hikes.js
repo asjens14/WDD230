@@ -74,7 +74,7 @@ export default class Hikes {
     // We need to loop through the children of our list and attach a listener to each, remember though that children is a nodeList...not an array. So in order to use something like a forEach we need to convert it to an array.
     const childrenArray = Array.from(this.parentElement.children);
     childrenArray.forEach(child => {
-      child.addEventListener('touchend', e => {
+      child.addEventListener('click', e => {
         // why currentTarget instead of target?
         this.showOneHike(e.currentTarget.dataset.name);
       });
@@ -83,7 +83,7 @@ export default class Hikes {
   buildBackButton() {
     const backButton = document.createElement('button');
     backButton.innerHTML = '&lt;- All Hikes';
-    backButton.addEventListener('touchend', () => {
+    backButton.addEventListener('click', () => {
       this.showHikeList();
     });
     backButton.classList.add('hidden');
@@ -92,6 +92,8 @@ export default class Hikes {
   }
 }
 // End of Hikes class
+
+
 // methods responsible for building HTML.  Why aren't these in the class?  They don't really need to be, and by moving them outside of the exported class, they cannot be called outside the module...they become private.
 function renderHikeList(parent, hikes) {
   hikes.forEach(hike => {
@@ -101,7 +103,9 @@ function renderHikeList(parent, hikes) {
 function renderOneHikeLight(hike) {
   const item = document.createElement('li');
   item.classList.add('light');
+  hide();
   // setting this to make getting the details for a specific hike easier later.
+  //id="details"
   item.setAttribute('data-name', hike.name);
   item.innerHTML = ` <h2>${hike.name}</h2>
 <div class="image"><img src="${imgBasePath}${hike.imgSrc}" alt="${hike.imgAlt}"></div>
@@ -120,6 +124,7 @@ function renderOneHikeLight(hike) {
 }
 function renderOneHikeFull(hike) {
   const item = document.createElement('li');
+  show();
   item.innerHTML = ` 
     
         <img src="${imgBasePath}${hike.imgSrc}" alt="${hike.imgAlt}">
@@ -140,7 +145,74 @@ function renderOneHikeFull(hike) {
             <h3>How to get there</h3>
             <p>${hike.directions}</p>
         </div>
+        <div>
+       
+      </div>
     
     `;
+
+    
   return item;
+}
+
+
+const hikeForm = document.querySelector('.comment-form');
+const textInput = document.querySelector('.text-input');
+const hikeInput = document.querySelector('.hikes');
+const commentList = document.querySelector('.comment-list');
+
+let comments = [];
+
+hikeForm.addEventListener('submit', function(event){
+  event.preventDefault();
+  addComment(textInput.value, hikeInput.value);
+});
+
+function addComment(item, hikeLoc) {
+  if (item !== '') {
+    const newComment = {
+      name: hikeLoc,
+      date: Date.now(),
+      content: item
+    };
+    comments.push(newComment);
+    addToLocalStorage(comments);
+
+    textInput.value = '';
+  }
+}
+
+function addToLocalStorage(comments) {
+  localStorage.setItem('comments', JSON.stringify(comments));
+  renderComments(comments);
+}
+
+function getFromLocalStorage() {
+  const reference = localStorage.getItem('comments');
+  if (reference) {
+    comments = JSON.parse(refernce);
+    renderComments(comments);
+  }
+}
+
+function renderComments(comments) {
+  commentList.innerHTML = '';
+
+  comments.forEach(function(item){
+    //This is where we would filter hike location
+
+    const li = document.createElement('li');
+    li.innerHTML = `${item.name}: "${item.content}"`;
+    commentList.append(li);
+  })
+}
+
+function hide() {
+  var x = document.getElementById("pain");
+  x.style.display = "none";
+}
+
+function show() {
+  var x = document.getElementById("pain");
+  x.style.display = "block";
 }

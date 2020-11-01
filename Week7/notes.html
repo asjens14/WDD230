@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 7 notes</title>
+</head>
+<style>
+    .collapsible {
+          background-color: #777;
+          color: white;
+          cursor: pointer;
+          padding: 18px;
+          width: 100%;
+          border: none;
+          text-align: left;
+          outline: none;
+          font-size: 15px;
+        }
+        
+        .active, .collapsible:hover {
+          background-color: #555;
+        }
+        
+        .content {
+          padding: 0 18px;
+          display: none;
+          overflow: hidden;
+          background-color: #f1f1f1;
+        }
+
+        div{
+            white-space: pre;
+        }
+</style>
+<body>
+    <button type="button" class="collapsible">Ch13 notes</button>
+    <div class="content">
+      <h2>function properties and methods</h2>
+      The <b>call()</b> method can be used to set the value of <b>this</b> inside a function to an that is provided as the first argument.
+      
+      <h3>call and apply methods</h3>
+      function sayHello(){
+      return `Hello, my name is ${ this.name }`;
+      }
+      We can create some objects that have a name property, then use the call() method to invoke the sayHello() function, providing each object as an argument. This will then take the value of this in the function
+      
+      const clark = { name: 'Clark' };
+      const bruce = { name: 'Bruce' };
+      sayHello.call(clark);
+      << 'Hello, my name is Clarke'
+      sayHello.call(bruce);
+      << 'Hello, my name is Bruce'
+      
+      If the function that’s called requires any parameters, these need to be provided as arguments after the first argument, which is always the value of <b>this</b>
+      
+      function sayHello(greeting='Hello'){
+      return `${ greeting }, my name is ${ this.name }`;
+      }
+      sayHello.call(clark, 'How do you do');
+      << 'How do you do, my name is Clark'
+      sayHello.call(bruce);
+      << 'Hello, my name is Bruce'
+      
+      If a function doesn’t refer to an object as this in its body, it can still be called using the call() method, but needs to be provided null as its first argument.
+      square.call(null, 4)
+      << 16
+      
+      The apply() method works in the same way, but the arguments of the function are provided as an array, even if there is only one argument:
+      
+      square.apply(null, [4])
+      << 16
+      
+      <h3>memoization</h3>
+      A feature that provides result caching
+      If a function takes time to compute a return value, the result can be saved in a <b>cache</b> property.
+      If the same argument is used later, the cached value can be returned.
+      
+      function square(x){
+      square.cache = square.cache || {};
+      if (!square.cache[x]) {
+      square.cache[x] = x*x;
+      }
+      return square.cache[x]
+      }
+      
+      
+      
+      <h2>immediately invoked function expressions</h2>
+      An <b>Immediately invoked function expression</b> is an anonymous function that is invoked as soon as it's defined
+      Easily achieved by placing parentheses at the end of the function definition
+      Has to be made into an expression by placing the whole declaration in parentheses
+      
+      (function(){
+      const temp = 'World';
+      console.log(`Hello ${temp}`);
+      })();
+      << 'Hello World'
+      
+      <h3>temporary variables</h3>
+      Variables can't be removed from scope once declared
+      If a variable is needed temporarily, it might create confusion if it's still available
+      Name may also clash with another piece of code
+      Placing inside an IIFE will allow it to only be available while the IIFE is invoked
+      
+      let a = 1;
+      let b = 2;
+      (()=>{
+      const temp = a;
+      a = b;
+      b = temp;
+      })();
+      a;
+      << 2
+      b;
+      << 1
+      console.log(temp);
+      << Error: "temp is not defined"
+      
+      <h3>initialization code<h3>
+      An IIFE can be used to set up code that will not be needed again
+      Will be invoked once, and can set up any variables, objects, and event handlers when the page loads
+      
+      <h3>self contained code blocks>
+      An IIFE can be used to enclose a block of code inside its own private scope so it doesn’t interfere with any other part of the program.
+      Using IIFEs in this way means code can be added or removed separately
+      
+      (function() {
+      // block A
+      const name = 'Block A';
+      console.log(`Hello from ${name}`);
+      }());
+      (function() {
+      // block B
+      const name = 'Block B';
+      console.log(`Hello from ${name}`);
+      }());
+      <<  Hello from Block A
+      Hello from Block B
+      
+      Both blocks contain a name variable, but don't interfere
+      
+      
+      <h2>functions that define and rewrite themselves</h2>
+      A function can not only call itself, but define and redefine itself
+      Done by assigning an anonymous function to a variable that has the same name as the function
+      
+      function party(){
+      console.log('Wow this is amazing!');
+      party = function(){
+      console.log('Been there, got the T-Shirt');
+      }
+      }
+      
+      If the function is also assigned to another variable, this variable will maintain the original function definition and not be rewritten
+      This is because the original function is assigned to a variable, then within the function, a variable with the same name as the function is assigned to a different function.
+      
+      function party(){
+      console.log('Wow this is amazing!');
+      party = function(){
+      console.log('Been there, got the T-Shirt');
+      }
+      }
+      const beachParty = party; // note that the party function has not been invoked
+      beachParty(); // the party() function has now been redefined, even though it hasn't been called explicitly
+      << 'Wow this is amazing!'
+      party(); 
+      << 'Been there, got the T-Shirt'
+      beachParty(); // but this function hasn't been redefined
+      << 'Wow this is amazing!'
+      beachParty(); // no matter how many times this is called it will remain the same
+      << 'Wow this is amazing!'
+      
+      
+      <h2>recursive functions</h2>
+      A recursive function is one that invokes itself until a condition is met
+      Useful when iterative processes are involved
+      
+      function factorial(n) {
+      if (n === 0) {
+      return 1;
+      } else {
+      return n * factorial(n - 1);
+      }
+      }
+      
+      
+      <h2>callbacks</h2>
+      <!---->
+      <h3>event driven asynchronous programming</h3>
+      
+      
+      <h2>closures</h2>
+      
+      
+      <h2>functional programming</h2>
+      
+      
+      <h2>getting functional</h2>
+      
+    </div>
+</body>
+<script>
+    //code for collapsable divs from w3schools.com
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
+        }
+      });
+    }
+</script>
+</html>
