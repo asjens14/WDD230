@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas example</title>
+    <style>
+        .myCanvas{
+            border: dotted 2px black;
+            margin: 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <div><b>Demo 1: drawing a rectangle</b><br>
+    <canvas id="myCanvas" class="myCanvas" width="200" height="200">
+        Sorry! Your browser doesn't support canvas.
+    </canvas>
+    </div>
+
+    <div><b>Demo 3: gradient</b><br>
+    <canvas id="demo3" class="myCanvas" width="200" height="200"></canvas>
+    </div>
+
+    <div><b>Demo 4: drawing a circle</b><br>
+    <canvas id="demo4" class="myCanvas" width="200" height="200"></canvas>
+    </div>
+
+    <div><b>Demo 5: saving canvas drawings</b><br>
+    <canvas id="demo5" class="myCanvas" width="200" height="200"></canvas><br>
+    <button name="saveButton" id="saveButton">Save Drawing</button>
+    </div>
+
+    <div><b>Demo 6: drawing an image to the canvas</b><br>
+    <canvas id="demo6" class="myCanvas" width="200" height="200"></canvas>
+    <img src="html5.png" id="myImageElem">
+    </div>
+
+
+    <div><b>Demo 7: image manipulation</b><br>
+    <canvas id="demo7" class="myCanvas" width="200" height="200"></canvas>
+    <img src="html5.png" id="secondImage">
+    </div>
+    
+</body>
+<script>
+    window.addEventListener("load", drawImageToCanvas, false);
+    window.addEventListener("load", manipulateImage, false);
+
+    //get the canvas element
+    var canvas = document.getElementById("myCanvas");
+    //get the context
+    //context is where drawing is rendered
+    var context = canvas.getContext("2d");
+    //fill brush with color - strokeStyle or fillStyle properties
+    //take 1 of 3 values: string representing a color, a CanvasGradient, or a CanvasPattern
+    //to draw a rectangle with a red border, define stroke color
+    context.strokeStyle = "red";
+    //for a red border/blue fill, also define fill color
+    context.fillStyle = "rgba(0, 0, 255, 0.5)";
+    //draw rectangle using fillRect() and strokeRect(). take (x, y, width, height)
+    context.fillRect(10, 10, 100, 100);   
+    context.strokeRect(10, 10, 100, 100);
+
+    drawGradient();
+    var canvas4 = document.getElementById("demo4")
+    drawCircle(canvas4);
+
+    //event listener for save button
+    var button = document.getElementById("saveButton");
+    button.addEventListener("click", saveDrawing, false);
+
+    function drawGradient() {
+        var canvas = document.getElementById("demo3");
+        var context = canvas.getContext("2d");
+        context.strokeStyle = "red";
+        var gradient = context.createLinearGradient(0, 0, 0, 200);
+        //specify color stops
+        //offset 0 is at the start, offset 1 is at the end
+        gradient.addColorStop(0, "blue"); 
+        gradient.addColorStop(1, "white"); 
+        context.fillStyle = gradient; 
+        context.fillRect(10, 10, 100, 100); 
+        context.strokeRect(10, 10, 100, 100); 
+    }
+
+
+    function drawCircle(canvas){
+        //var canvas = document.getElementById("demo4");
+        var context = canvas.getContext("2d");
+        context.beginPath();
+        //circle is created using arc()
+        //for a full circle, 2π is used for endAngle
+        context.arc(50, 50, 30, 0, Math.PI*2, true);
+        //circle is finished. close the path
+        context.closePath();
+        //set stroke and fill style
+        context.strokeStyle = "red";
+        context.fillStyle = "blue";
+        context.lineWidth = 3;
+        //fill and stroke the path
+        context.fill(); 
+        context.stroke();
+    }
+
+
+    function saveDrawing() {
+        var canvas5 = document.getElementById("demo5");
+        drawCircle(canvas5);
+        //open canvas drawing in a new tab
+        window.open(canvas5.toDataURL("image/png"));
+    }
+
+
+    function drawImageToCanvas() {
+        var canvas = document.getElementById("demo6");
+        var context = canvas.getContext("2d");
+        var image = document.getElementById("myImageElem");
+        context.drawImage(image, 68, 68);
+    }
+
+
+    function manipulateImage() {
+        //will convert an image to black and white
+
+        var canvas = document.getElementById("demo7");
+        var context = canvas.getContext("2d");
+        var image = document.getElementById("secondImage");
+        context.drawImage(image, 68, 68);
+        //retrieve the entire canvas
+        var imageData = context.getImageData(0, 0, 200, 200);
+        
+        var red, green, blue, greyscale;
+        
+        //i increases by 4 because each pixel takes up 4 values in the imageData array, one number each for the R, G, B, and A values
+        for (var i = 0; i < imageData.data.length; i += 4) {
+            red = imageData.data[i];
+            green = imageData.data[i + 1];
+            blue = imageData.data[i + 2];
+
+            //determine the grayscale value for the current pixel
+            grayscale = red * 0.3 + green * 0.59 + blue * 0.11;
+
+            //store the values back into the red, green, and blue values in the data array
+            imageData.data[i] = grayscale; 
+            imageData.data[i + 1] = grayscale;  
+            imageData.data[i + 2] = grayscale;
+        }
+        context.putImageData(imageData, 0, 0);
+    }
+</script>
+</html>

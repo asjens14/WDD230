@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 8 notes</title>
+</head>
+<style>
+    .collapsible {
+        background-color: #777;
+        color: white;
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+    }
+        
+    .active, .collapsible:hover {
+        background-color: #555;
+    }
+        
+    .content {
+        padding: 0 18px;
+        display: none;
+        overflow: hidden;
+        background-color: #f1f1f1;
+    }
+
+    div{
+        white-space: pre;
+    }
+</style>
+<body>
+    <button type="button" class="collapsible">Ch 8 - CSS3 transforms and transitions</button>
+    <div class="content">
+<h2>tranforms</h2>
+<b>Transform</b> property allows for rotating, scaling, and/or skewing any element on the page
+Multiple transformations can be declared using a space separated list
+
+<h3>translation</h3>
+Allows elements to move left, right, up, down
+
+        Transform: translate(x, y)
+        Transform: translateX()
+        Transform: translateY()
+	
+<h3>scaling</h3>
+The <b>scale(x,y)</b>function scales an element by the defined factors horizontally then vertically
+If one value is provided, it is used for both
+
+        Transform: scale(x,y)
+        Transform: scaleX()
+        Transform: scaleY()
+
+*Scaled elements grow and shrink from center
+
+*Has no impact on document flow
+
+<h3>rotation</h3>
+<b>rotate()</b> rotates an element around the point of origin
+*Angles are declared in degrees; positive = cw, negative = ccw
+
+<h3>skew</h3>
+<b>skew(x,y)</b> specifies skew along an axis
+If the second parameter is excluded, skew will only happen on the x axis
+
+<h3>changing the origin of transform</h3>
+The origin from which transforms are applied can be changed using the <b>transform-origin</b>property
+Same syntax as <b>backgroung-position</b>
+Defaults to center of the object
+
+
+*order of transform matters
+If you rotate before translating, the translate will be on the rotated axis
+
+<h2>transitions</h2>
+Transitions allow the values of CSS properties to change over time, providing simple animations
+CSS transitions are declared along with the regular styles on an element
+
+Steps to create a simple transition using CSS:
+<b>1.</b>declare the original state of the element in the default style declaration
+<b>2.</b>declare the final state of the element
+<b>3.</b>include the transition functions in the default style declaration using the transition properties, including:
+        transition-property
+        transition-duration
+        transition-timing-function
+        transition-delay
+
+<b>transition-property</b> defines the CSS properties of the element to be transitioned
+Any property changing from one value to another you can find a valid midpoint for can be transitioned
+*exception is visibility
+
+<b>transition-duration</b> sets how long the transition will take
+Can be declared in seconds or milliseconds
+200ms is considered the optimum time for a transition
+
+<b>transition-timing-function</b> lets you control the pace of the transition in more granular detail
+Most common timing function key terms:
+	Ease - slow start, then speeds up
+	Linear - constant speed
+	Ease-in - starts slow, then accelerates
+	Ease-out - starts fast, then slows down
+	Ease-in-out - similar to ease, but accelerates more sharply at the start
+	
+<b>transition-delay</b> makes it possible to introduce delay before the transition begins
+*a negative time delay that is less than the duration of the transition will cause it to start immediately, but start part way through
+
+<h3>the transition shorthand property</h3>
+The four transition properties can be combined in to the <b>transition</b> property
+        .ad-ad2 h1 span {
+            transition-property: transform; 
+            transition-duration: 0.2s;  
+            transition-timing-function: ease-out;
+            transition-delay: 50ms;
+        }
+
+Becomes
+        .ad-ad2 h1 span {
+            transition: transform 0.2s ease-out 50ms;
+        }
+
+<h3>multiple transitions</h3>
+The <b>transition</b> property also allows for multiple transitions in one call
+To properties transition at different rates, or for only a few to have a transition effect, 
+include them as a comma separated list including transition-property and transition-duration for each
+
+        transition-property: transform, color; 
+        transition-duration: 0.2s, 0.1s;  
+        transition-timing-function: ease-out, linear;
+        transition-delay: 50ms;
+
+Shorthand can also be used to specify multiple transitions
+
+        transition: transform 0.2s ease-out 50ms, color 0.1s linear 50ms;
+
+To change both at the same rate, property names can be used, or use the <b>all</b> keyword
+When using the all keyword, all the properties transition at the same rate, speed, and delay:
+
+        transition: all 0.2s ease-out 50ms;
+
+
+<h2>animations</h2>
+CSS animations allow you to control each step of an animation using keyframes
+A keyframe is a snapshot that defines a starting or end point of any smooth transition
+
+<h3>keyframes</h3>
+To animate an element, you first create a named animation, then attach it to an element in that element’s property declaration block.
+To create an animation, use the @keyframes rule for IE10+ and FF16+ followed by a name of your choosing, 
+which will serve as the identifier for the animation. Then, you can specify your keyframes.
+
+        @keyframes myAnimation { 
+        /* put animation keyframes here */
+        }
+
+Each keyframe looks like its own nested CSS declaration block
+Instead of a traditional selector, you use percentage values
+The two key terms are <b>from</b> and <b>to</b> - evaluate to 0% and 100% respectively
+These values specify how far along the animation each keyframe is located.
+
+Include the properties to animate inside each keyframe, along with the animated values
+*keyframes can be in any order. Percentage values determine order
+
+Animation examples:
+
+        @keyframes moveRight { 
+            from {
+                transform: translateX(-50%);
+            }
+            to {
+                transform: translateX(50%);
+            }
+        }
+
+        @keyframes appearDisappear { 
+            0%, 100% {
+                opacity: 0;
+            }
+            20%, 80% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes bgMove {
+            100% {
+                background-position: 120% 0;
+            }
+        }
+
+<h3>animation properties</h3>
+<b>animation-name</b> - used to attach an animation to an element
+<b>animation-duration</b> - defines the length of time an animation takes to complete one iteration
+<b>animation-timing-function</b> - determines how the animation will progress
+Options are the same as for transition-timing-function, with step-start, step-end, and steps(number,direction)
+
+*background images can't be animated, but background-position is.
+The <b>steps()</b> function moves the background image through the background box
+
+        .ad-ad3 :after {
+            content: '';
+            width: 90px;
+            height: 92px;
+            background-image: url(../images/bike_sprite.png);
+            display: block;
+            margin: auto;
+        }
+        @keyframes bike {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: -360px 0;
+            }
+        }
+
+        animation-timing-function: steps(4, end);
+
+<b>animation-iteration-count</b> - lets you define how many times the animation will play through
+<b>animation-direction</b> - Can be used to change animation direction
+	<b>normal</b> - 0% to 100%
+	<b>Reverse</b> - 100% to 0%
+	<b>alternate</b> - 0% to 100%, then 100% to 0%
+<b>animation-delay</b> - define how many milliseconds or seconds to wait before the animation begins
+<b>animation-fill-mode</b> - defines what happens before the first animation iteration begins and after the last iteration ends
+Values are:
+	None
+	Forwards
+	backwards 
+	Both
+<b>animation-play-state</b> - defines whether the animation is running or paused
+
+<h3>the shorthand animation property</h3>
+The <b>animation</b> property takes a space separated list of values
+
+        .verbose {
+            animation-name: appearDisappear; 
+            animation-duration: 300ms; 
+            animation-timing-function: ease-in;
+            animation-iteration-count: 1;
+            animation-direction: alternate;
+            animation-delay: 5s;
+            animation-fill-mode: backwards;
+            animation-play-state: running;
+        }
+
+        /* shorthand */
+        .concise {
+            animation: 300ms ease-in alternate 5s backwards appearDisappear;
+        }
+
+    </div>
+    <button type="button" class="collapsible">Ch 12 - canvas, SVG, and drag and drop</button>
+    <div class="content">
+<h2>canvas</h2>
+The canvas API allows shapes and lines to be drawn using javascript
+
+<h3>creating a canvas element</h3>
+Add a canvas element to the page. Text in between is shown if canvas is not supported
+Add an ID
+Takes both a width and height attribute, which must be set
+Add a border
+
+<h3>drawing on the canvas</h3>
+Before drawing, you need to grab the canvas element
+<h3>getting the context</h3>
+Once the element is in a variable, set up the context, where the drawing is rendered
+Done by calling the getContext() method and passing it the string "2d"
+<h3>filling brush with color</h3>
+Saturate brush with color using the strokeStyle or fillStyle properties
+strokeStyle and fillStyle are set on a context object, and both take one of three values: a string representing a color, a CanvasGradient object, or a CanvasPattern object.
+Stroke can be thought as the border of the shape
+Define stroke color using strokeStyle
+Define fill color using fillStyle
+
+*<b>the canvas coordinate system</b>
+The coordinate system is different for the canvas
+If the canvas is 200 by 200:
+Top-left is (0,0)
+Bottom-right is (200,200)
+
+<h3>variations on fillStyle</h3>
+Instead of color, you can use a CanvasGradient or a CanvasPattern object
+
+To create a CanvasGradient, use <b>createLinearGradient()</b> or <b>createRadialGradient()</b>
+X0 and y0 represent start point
+X1 and y1 represent end point
+Specify color stops. Offset 0 is start, offset 1 is end
+
+<h3>drawing other shapes by creating paths</h3>
+Paths create a blueprint for lines, arcs, and shapes, but are invisible until given a stroke
+With complex shapes, there are 3 steps to take:
+<b>1.</b>layout the path
+<b>2.</b>stroke the path
+<b>3.</b>fill the path
+
+An arc is created using the <b>arc()</b> method
+Arc(x, y, radius, startAngle, endAngle, anticlockwise)
+
+<h2>SVG</h2>
+SVG stands for Scalable Vector Graphics, a file format that allows you to describe vector graphics using XML
+Unlike bitmaps, vector images preserve their quality even when blown up or shrunk down
+
+*XML stands for eXtensible Markup Language
+
+<h3>drawing in SVG</h3>
+Drawing a circle in SVG is easier than drawing a circle with canvas
+
+        < svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"></svg>
+        < circle cx="50" cy="50" r="25" fill="red"/>
+        < /svg>
+
+The <b>viewbox</b> attribute defines the starting location, width, and height of the image
+The <b>circle</b> element defines a circle, with cx and cy the X and Y coordinates of the center
+Radius is represented by r
+Fill defines the fill style
+
+<h3>canvas vs SVG</h3>
+Canvas allows for pixel manipulation, but operates in immediate mode
+This means if you want to add more to the canvas, you can't add to what is already there
+After drawing a shape, canvas no longer has access to it, because id doesn't persist as an object
+If you want to add more, the new shape must be drawn from scratch
+No access to what is drawn via the DOM
+
+What is drawn in SVG is accessible to the DOM, because it operates in retained mode
+The structure of the image is preserved in the XML document that describes it
+Since SVG is a file format, you can't manipulate SVGs the way you can manipulate pixels in canvas
+
+<h2>drag and drop</h2>
+This API allows us to specify that certain elements are draggable, and then specify what should happen when these draggable elements are dragged over, or dropped onto other elements
+
+Steps to adding drag and drop to a page:
+<b>1.</b>set the <b>draggable</b> attribute on any html elements you'd like to be draggable
+<b>2.</b>add an event listener for the <b>dragstart</b> event on any draggable html element
+<b>3.</b>add an event listener for the <b>dragover</b> and <b>drop</b> events on elements you want to have accept dropped items
+
+*draggable is not a boolean attribute, so it has to be set explicitly to true
+
+<h3>the DataTransfer object</h3>
+These objects allow us to set and get data about the elements that are being dragged
+DataTransfer lets us define two pieces of info:
+	The type of data we're saving of the draggable element
+    The value of the data iself
+    </div>
+</body>
+<script>
+    //code for collapsable divs from w3schools.com
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+        });
+    }
+</script>
+</html>
+</body>
+</html>
