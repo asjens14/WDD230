@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 9 notes</title>
+    <style>
+    .collapsible {
+        background-color: #777;
+        color: white;
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+    }
+        
+    .active, .collapsible:hover {
+        background-color: #555;
+    }
+        
+    .content {
+        padding: 0 18px;
+        display: none;
+        overflow: hidden;
+        background-color: #f1f1f1;
+    }
+
+    div{
+        white-space: pre;
+    }
+</style>
+</head>
+
+<body>
+    <button type="button" class="collapsible">Ch 9 - the window object</button>
+    <div class="content">
+<h2>the browser object model</h2>
+Is a collection of properties and methods that contain info about the browser and screen
+<h3>going global</h3>
+Global variables are properties of a global object.
+In a browser environment, this is the window object
+Any global variable created is a property of the window object
+
+        x = 6;  // global variable created
+        << 6
+
+        window.x // same variable can be accessed as a property of the window object
+        << 6
+
+        // both variables are exactly the same
+        window.x === x;
+        << true
+
+Refer to global variables without using the window object
+
+
+<h2>browser information</h2>
+The <b>navigator</b> object contains info about the browser
+The <b>userAgent</b> property returns info about the browser and operating system
+
+<b>window.location</b> property is an object that contains info about the URL of the page
+The <b>href</b> property returns the URL as a string
+The <b>protocol</b> property returns a string describing the protocol used
+The <b>hostname</b> property returns a string describing the domain of the current URL
+The <b>port</b> returns the port number as a string
+The <b>pathname</b> returns the path as a string
+The <b>search</b> property returns the query search string parameters
+
+<b>reload()</b> forces reload of the page. A parameter of true forces reload from the server
+<b>assign()</b> can be used to load another resource from a URL provided as a parameter
+<b>replace()</b> is similar to assign(), but the current page won't be stored in the session history
+<b>toString()</b> returns a string containing the whole URL
+
+<h2>the browser history</h2>
+The <b>window.history</b> property is used to access info about any previously visited pages
+<b>window.history.length</b> shows how many pages were visited before arriving at the current page
+<b>window.history.go()</b> is used to go to a specific page with 0 being the current page
+
+        window.history.go(1); // goes forward 1 page
+        window.history.go(0); // reloads the current page
+        window.history.go(-1); // goes back 1 page
+
+<h2>screen information</h2>
+<b>window.screen</b> contains info about the screen the browser is displayed on
+
+Screen size in pixels
+<b>.height</b>
+<b>.width</b>
+
+Size of screen excuding operating system menues
+<b>.availWidth</b>
+<b>.availHeight</b>
+        
+    </div>
+
+    <button type="button" class="collapsible">Ch 14 - HTML5 APIs</button>
+    <div class="content">
+<h2>the data- attribute</h2>
+Is a way of embedding data in a web page using custom attributes that are ignored by the browser
+
+<i>Must use the following format</i>
+    Start with <b>data-</b>
+    Contain only lowercase letters, hyphens, dots, colons or underscores
+    Include optional string value
+    
+Each element has a <b>dataset</b> property that is used to access any <b>data-</b> attributes it contains
+If a <b>data-</b> attribute's name contains hyphens, they are replaced with camel-case
+
+<h2>HTML5 APIs</h2>
+<h3>HTML5 web storage</h3>
+Provides a key-value store on the client computer
+
+To save a value
+        localStorage.setItem('key', 'value');
+
+To get a value
+        localStorage.getItem('key');
+    
+To remove an item
+        localStorage.removeItem('key')
+    
+Using JSON, any object can be stored in localStorage
+        localStorage.setItem('key', JSON.stringify(object))
+To retrieve it
+        Variable = JSON.parse(localStorage.getItem('key'))    
+    
+<h3>Geolocation*</h3>
+Used to obtain the geographical position of the device
+Is a property of the <b>navigator</b> object
+
+        Navigator.geolocation.getCurrentPosition
+    
+<h3>Web workers*</h3>
+Web workers allow processes to be run in the background
+
+        const worker = new Worker('task.js');
+
+Web workers use the concept of messages to communicate between the main script and the worker
+To post a message to the worker and start the worker
+    
+        worker.postMessage('Hello');
+    
+To post a message from the worker
+    
+        self.postMessage('Finished');
+
+When a message is posted, a <b>message</b> event is fired
+The data sent with the message as an argument is stored in the <b>data</b> property of the event
+
+Log data returned from the worker
+        worker.addEventListener('message', (event) => {
+            console.log(event.data);
+        }, false);
+
+
+When a worker has completed its task, it can be stopped using the
+    <b>worker.terminate()</b> method from the main script or
+<b>self.close</b> from the worker script
+            
+        <button type="button" class="collapsible">Canvas API example</button>
+        <div class="content">
+
+            <canvas id='canvas' width='400' height='400'>Sorry, but your browser does not support the canvas element</canvas>
+            *see code for examples
+        </div>
+    </div>
+</body>
+<script>
+    //code for collapsable divs from w3schools.com
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+        });
+    }
+</script>
+
+<!--canvas example-->
+<script>
+    const canvasElement = document.getElementById('canvas');//access the canvas
+    const context = canvasElement.getContext('2d');//access the contexxt
+
+    context.fillStyle = "#0000cc"; // a blue fill color 
+    context.strokeStyle = "#ccc"; // a gray stroke color
+    context.lineWidth = 4;//set width of the stroke
+
+    context.fillRect(10,10,100,50);//filled rectangle
+    context.strokeRect(10,100,100,50);//unfilled rectangle
+
+    //draw a line
+    context.beginPath();
+    context.moveTo(130, 50);
+    context.lineTo(180, 50);
+    context.moveTo(155, 50);
+    context.lineTo(155, 90);
+    context.strokeStyle = '#c00';
+    context.lineWidth = 15;
+    context.stroke();
+
+    //arc
+    context.beginPath();
+    context.arc(200, 200, 30, 0, Math.PI * 2, false);
+    context.strokeStyle = '#ff0';
+    context.lineWidth = 4;
+    context.stroke();
+
+    //filltext
+    context.fillStyle = '#0c0'; // a blue fill color
+    context.font = 'bold 26px sans-serif';
+    context.fillText('Hello', 20, 200);
+
+</script>
+</html>
