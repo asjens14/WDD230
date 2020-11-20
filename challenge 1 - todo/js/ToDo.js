@@ -26,7 +26,7 @@ function newTodo(){
     addToList(todoDiv);//adds it to list
     ls.saveTodo(todo);//imported from ls.js
 }
-//2
+//2 creates a todo object
 function createTodo(){
     const input = document.querySelector('#todoInput');
     const newTodo = {id: Date.now(), content: input.value, completed: false}//create object
