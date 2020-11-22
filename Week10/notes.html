@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week10 notes</title>
+    <style>
+        .collapsible {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .active,
+        .collapsible:hover {
+            background-color: #555;
+        }
+
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f1f1f1;
+        }
+
+        div {
+            white-space: pre;
+        }
+    </style>
+</head>
+
+<body>
+    <button type="button" class="collapsible">Form validation<a href="https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation">link</a></button>
+    <div class="content">
+<h2>What is form validation</h2>
+When data is entered, the browser and/or server checks if it is in the correct format
+Done in browser = client-side
+Done in server = server-side
+
+Reasons for validating forms
+<b>1.</b> We want the right data in the right format
+<b>2.</b> We want to protect the user's data
+<b>3.</b> We want to protect ourselves
+
+<h2>Different types of client-side validation</h2>
+<b>Built-in</b> uses HTML5 validation features
+<b>JavaScript</b> validation is coded in. customizable, but needs to be created
+
+<h2>Using built-in form validation</h2>
+Done using validation attributes on form elements
+<b>required</b> - specifies if field needs to be filled before submitting
+<b>minlength</b> and <b>maxlength</b> - specifies min/max length of text
+<b>min</b> and <b>max</b> - specifies min/max of numerical inputs
+<b>type</b> - specifies if data needs to be a number, email, or other type
+<b>pattern</b> - specifies regular expression that defines a pattern to follow
+
+<h2>Validating forms using JavaScript</h2>
+Take control of the look/feel of native error messages
+Deal with legacy browsers that don't support HTML's built-in validation
+
+<h3>Constraint validation API</h3>
+Consists of a set of methods & properties available on form elements
+<b>HTMLButtonElement</b> -> represents a < button > element
+<b>HTMLFieldSetElement</b> -> represents a < fieldset > element
+<b>HTMLInputElement</b> -> represents an < input > element
+<b>HTMLOutputElement</b> -> represents an < output > element
+<b>HTMLSelectElement</b> -> represents a < select > element
+<b>HTMLTextAreaElement</b> -> represents a < textarea > element
+
+Makes these properties available on these elements
+<b>validationMessage</b> -> 
+returns a localized message describing the validation constraints that aren't satisfied
+<b>validity</b> ->
+Returns a <b>validityState</b> object that contains properties describing the validity state of the element
+<b>willValidate</b> ->
+Returns true if the element will be validated when the form is submitted
+
+<b>checkValidity()</b> ->
+Returns true if the element's value has no validity problems
+<b>setCustomValidity(message)</b> ->
+Adds a custom validity message to the element        
+    </div>
+    <button type="button" class="collapsible">Fetch API<a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch">link</a></button>
+    <div class="content">
+The Fetch API provides an interface for accessing/manipulating parts of the HTTP pipeline
+
+A basic fetch request is easy to set up
+
+    fetch('http://example.com/movies.json')
+        .then(response => response.json())
+    .then(data => console.log(data));
+
+The simplest use of <b>fetch()</b> takes one argument, the path to the resource you want to fetch, and returns a promise containing the response
+This is just an HTTP response, not the JSON
+To extract the JSON content, use the <b>JSON()</b> method
+
+The <b>fetch()</b> method also accepts a second parameter, an <i>init</i> object that allows you to control different settings
+
+<button type="button" class="collapsible"></button>
+<div class="content">
+    // Example POST method implementation:
+    async function postData(url = '', data = {}) {
+        // Default options are marked with *
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        return response.json(); // parses JSON response into native JavaScript objects
+    }
+
+postData('https://example.com/answer', { answer: 42 })
+    .then(data => {
+        console.log(data); // JSON data parsed by `data.json()` call
+    });
+</div>
+
+<h3>Uploading JSON data</h3>
+Using <b>fetch()</b> to POST JSON-encoded data
+<button type="button" class="collapsible"></button>
+<div class="content">
+    const data = { username: 'example' };
+
+    fetch('https://example.com/profile', {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+</div>
+
+<h3>Uploading a file</h3>
+Files can be uploaded using an HTML < input type="file" />, <b>formData()</b>, and <b>fetch()</b>
+<button type="button" class="collapsible"></button>
+<div class="content">
+    const formData = new FormData();
+    const fileField = document.querySelector('input[type="file"]');
+
+    formData.append('username', 'abc123');
+    formData.append('avatar', fileField.files[0]);
+
+    fetch('https://example.com/profile/avatar', {
+        : 'PUT',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log('Success:', result);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+</div>
+
+<h3>uploading multiple files</h3>
+Files can be uploaded using an HTML < input type="file" multiple />
+<button type="button" class="collapsible"></button>
+<div class="content">
+    const formData = new FormData();
+    const photos = document.querySelector('input[type="file"][multiple]');
+
+    formData.append('title', 'My Vegas Vacation');
+    for (let i = 0; i < photos.files.length; i++) {
+        formData.append('photos', photos.files[i]);
+    }
+
+    fetch('https://example.com/posts', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log('Success:', result);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+</div>
+
+<h3>Proccessing a text file line by line</h3>
+<button type="button" class="collapsible"></button>
+<div class="content">
+    async function* makeTextFileLineIterator(fileURL) {
+        const utf8Decoder = new TextDecoder('utf-8');
+        const response = await fetch(fileURL);
+        const reader = response.body.getReader();
+        let { value: chunk, done: readerDone } = await reader.read();
+        chunk = chunk ? utf8Decoder.decode(chunk) : '';
+
+        const re = /\n|\r|\r\n/gm;
+        let startIndex = 0;
+        let result;
+
+        for (;;) {
+            let result = re.exec(chunk);
+            if (!result) {
+                if (readerDone) {
+                    break;
+                }
+                let remainder = chunk.substr(startIndex);
+                ({ value: chunk, done: readerDone } = await reader.read());
+                chunk = remainder + (chunk ? utf8Decoder.decode(chunk) : '');
+                startIndex = re.lastIndex = 0;
+                continue;
+            }
+            yield chunk.substring(startIndex, result.index);
+            startIndex = re.lastIndex;
+        }
+        if (startIndex < chunk.length) {
+            // last line didn't end in a newline char
+            yield chunk.substr(startIndex);
+        }
+    }
+
+    async function run() {
+        for await (let line of makeTextFileLineIterator(urlOfFile)) {
+            processLine(line);
+        }
+    }
+    run();
+</div>
+
+<h3>Checking that the fetch was successful</h3>
+<button type="button" class="collapsible"></button>
+<div class="content">
+    fetch('flowers.jpg')
+        .then(response => {
+            if (!response.ok) {
+                new Error('Network response was not ok');
+            }
+            return response.blob();
+        })
+    .then(myBlob => {
+        myImage.src = URL.createObjectURL(myBlob);
+    })
+    .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+    });
+</div>
+</div>
+</body>
+<script>
+    //code for collapsable divs from w3schools.com
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
+    }
+</script>
+
+</html>
