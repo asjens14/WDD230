@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .hidden{
+            display: none;
+        }
+        h1{
+            text-align: center;
+        }
+
+        .container{
+            max-width: 400px;
+            margin: auto;
+            font-size: 14px;
+            font-family: sans-serif;
+        }
+
+        .editEntry{
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin: 10px 0px;
+        }
+
+        .entry{
+            display: flex;
+            align-items: center;
+            width: 100%;
+            border: 1px solid black;
+            padding: 10px;
+            box-sizing: border-box;
+            margin: 10px 0px;
+        }
+        .entryTitle{
+            padding: 10px 20px;
+            width: calc(100% - 50px);
+            text-align: center;
+            
+        }
+        .entryTitle:hover{
+            background-color: lightgray;
+        }
+        .add-entry-wrapper{
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            align-items: center;
+            margin: 10px 0px;
+            box-sizing: border-box;
+        }
+        .overflow{
+            height: 500px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <button id="clear">Clear</button>
+    <div class="container">
+        <h1>Journal</h1>
+        <button id="back" class="hidden">Back</button>
+
+        <div class="editEntry hidden overflow" id="edit">
+        </div>
+
+        <div class="entry-wrapper overflow" id="wrapper">
+            <div id="entries">
+            </div>
+        </div>
+        <div class="add-entry-wrapper">
+            <button id="addBtn">New Entry</button>
+        </div>
+    </div>
+</body>
+<script type="module" src="js/journal.js"></script>
+</html>
